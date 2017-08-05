@@ -2,7 +2,7 @@
 
 namespace Authenticator\Bridges\Nette;
 
-use Authenticator\DatabaseAuthenticator;
+use Authenticator\DibiAuthenticator;
 use Authenticator\LoginForm;
 use Nette\DI\CompilerExtension;
 
@@ -30,7 +30,7 @@ class Extension extends CompilerExtension
         $config = $this->validateConfig($this->defaults);
 
         $builder->addDefinition($this->prefix('default'))
-            ->setClass(DatabaseAuthenticator::class, [$config]);
+            ->setClass(DibiAuthenticator::class, [$config]);
 
         $builder->addDefinition($this->prefix('form'))
             ->setClass(LoginForm::class);

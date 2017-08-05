@@ -12,12 +12,12 @@ use Nette\SmartObject;
 
 
 /**
- * Class DatabaseAuthenticator
+ * Class DibiAuthenticator
  *
  * @author  geniv
  * @package Authenticator
  */
-class DatabaseAuthenticator implements IAuthenticator
+class DibiAuthenticator implements IAuthenticator
 {
     use SmartObject;
 
@@ -32,7 +32,7 @@ class DatabaseAuthenticator implements IAuthenticator
 
 
     /**
-     * DatabaseIdentity constructor.
+     * DibiAuthenticator constructor.
      *
      * @param array      $parameters
      * @param Connection $connection
