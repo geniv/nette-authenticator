@@ -15,7 +15,7 @@ use Nette\DI\CompilerExtension;
  */
 class Extension extends CompilerExtension
 {
-    /** @var array vychozi hodnoty */
+    /** @var array default values */
     private $defaults = [
         'tablePrefix' => null,
     ];
@@ -29,9 +29,11 @@ class Extension extends CompilerExtension
         $builder = $this->getContainerBuilder();
         $config = $this->validateConfig($this->defaults);
 
+        // define authenticator
         $builder->addDefinition($this->prefix('default'))
             ->setClass(DibiAuthenticator::class, [$config]);
 
+        // define form
         $builder->addDefinition($this->prefix('form'))
             ->setClass(LoginForm::class);
     }
