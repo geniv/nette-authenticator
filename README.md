@@ -26,6 +26,7 @@ neon configure:
 # prihlasovani
 authenticator:
     tablePrefix: %tablePrefix%
+#   autowired: false    # default null, false => disable autowiring (in case multiple linked extension)    
 ```
 
 neon configure extension:

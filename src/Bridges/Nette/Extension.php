@@ -18,6 +18,7 @@ class Extension extends CompilerExtension
     /** @var array default values */
     private $defaults = [
         'tablePrefix' => null,
+        'autowired'   => null,
     ];
 
 
@@ -32,6 +33,12 @@ class Extension extends CompilerExtension
         // define authenticator
         $builder->addDefinition($this->prefix('default'))
             ->setClass(DibiAuthenticator::class, [$config]);
+
+        // if define autowired then set value
+        if (isset($config['autowired'])) {
+            $builder->getDefinition($this->prefix('default'))
+                ->setAutowired($config['autowired']);
+        }
 
         // define form
         $builder->addDefinition($this->prefix('form'))
