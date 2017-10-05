@@ -32,11 +32,11 @@ class Extension extends CompilerExtension
 
         // define authenticator
         $builder->addDefinition($this->prefix('default'))
-            ->setClass(DibiAuthenticator::class, [$config]);
+            ->setFactory(DibiAuthenticator::class, [$config]);
 
         // define form
         $builder->addDefinition($this->prefix('form'))
-            ->setClass(LoginForm::class);
+            ->setFactory(LoginForm::class);
 
         // if define autowired then set value
         if (isset($config['autowired'])) {
