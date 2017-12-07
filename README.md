@@ -27,6 +27,7 @@ neon configure:
 authenticator:
     tablePrefix: %tablePrefix%
 #   autowired: false    # default null, false => disable autowiring (in case multiple linked extension) | self
+#   authenticator: DibiAuthenticator
 ```
 
 neon configure extension:

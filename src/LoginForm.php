@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Authenticator;
 
@@ -28,7 +28,7 @@ class LoginForm extends Control
     /**
      * LoginForm constructor.
      *
-     * @param ITranslator $translator
+     * @param ITranslator|null $translator
      */
     public function __construct(ITranslator $translator = null)
     {
@@ -43,10 +43,10 @@ class LoginForm extends Control
     /**
      * Set template path.
      *
-     * @param string $path
-     * @return $this
+     * @param $path
+     * @return LoginForm
      */
-    public function setTemplatePath($path)
+    public function setTemplatePath($path): self
     {
         $this->templatePath = $path;
         return $this;
@@ -54,7 +54,7 @@ class LoginForm extends Control
 
 
     /**
-     * Render default.
+     * Render.
      */
     public function render()
     {
@@ -66,12 +66,12 @@ class LoginForm extends Control
 
 
     /**
-     * Create component login form with success callback.
+     * Create component form.
      *
      * @param $name
      * @return Form
      */
-    protected function createComponentForm($name)
+    protected function createComponentForm($name): Form
     {
         $form = new Form($this, $name);
         $form->setTranslator($this->translator);
@@ -99,7 +99,7 @@ class LoginForm extends Control
 
 
     /**
-     * Ajax handler for logout.
+     * Handle out.
      */
     public function handleOut()
     {
