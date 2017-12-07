@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Authenticator;
 
@@ -46,11 +46,11 @@ class DibiAuthenticator implements IAuthenticator
 
 
     /**
-     * Get list users.
+     * Get list.
      *
      * @return Fluent
      */
-    public function getList()
+    public function getList(): Fluent
     {
         return $this->connection->select('id, login, hash, username, email, role, active, added')
             ->from($this->tableIdentity);
@@ -65,6 +65,7 @@ class DibiAuthenticator implements IAuthenticator
      * @param string $role
      * @param bool   $active
      * @return mixed
+     * @throws \Dibi\Exception
      */
     public function insertUser($username, $password, $role = 'guest', $active = true)
     {
@@ -84,6 +85,7 @@ class DibiAuthenticator implements IAuthenticator
      *
      * @param $id
      * @return Result|int
+     * @throws \Dibi\Exception
      */
     public function deleteUser($id)
     {
@@ -94,39 +96,39 @@ class DibiAuthenticator implements IAuthenticator
 
 
     /**
-     * Get password hash.
+     * Get hash.
      *
-     * @param $password
-     * @return mixed
+     * @param string $password
+     * @return string
      */
-    public function getHash($password)
+    public function getHash(string $password): string
     {
         return Passwords::hash($password);
     }
 
 
     /**
-     * Authenticate user.
+     * Authenticate.
      *
      * @param array $credentials
      * @return Identity
      * @throws AuthenticationException
      */
-    public function authenticate(array $credentials)
+    public function authenticate(array $credentials): Identity
     {
         list($login, $password) = $credentials;
 
-        $cursor = $this->getList()
+        $result = $this->getList()
             ->where(['login' => $login, 'active' => true])
             ->fetch();
 
-        if ($cursor) {
-            if (Passwords::verify($password, $cursor->hash)) {
-                if ($cursor->active) {
-                    $arr = $cursor->toArray();
+        if ($result) {
+            if (Passwords::verify($password, $result['hash'])) {
+                if ($result['active']) {
+                    $arr = $result->toArray();
                     unset($arr['hash']);
 
-                    return new Identity($cursor->id, $cursor->role, $arr);
+                    return new Identity($result['id'], $result['role'], $arr);
                 } else {
                     throw new AuthenticationException('Not active account.', self::NOT_APPROVED);
                 }

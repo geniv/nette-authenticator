@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Authenticator\Bridges\Nette;
 
@@ -17,8 +17,9 @@ class Extension extends CompilerExtension
 {
     /** @var array default values */
     private $defaults = [
-        'tablePrefix' => null,
-        'autowired'   => null,
+        'tablePrefix'   => null,
+        'autowired'     => null,
+        'authenticator' => DibiAuthenticator::class,
     ];
 
 
@@ -32,7 +33,7 @@ class Extension extends CompilerExtension
 
         // define authenticator
         $builder->addDefinition($this->prefix('default'))
-            ->setFactory(DibiAuthenticator::class, [$config]);
+            ->setFactory($config['authenticator'], [$config]);
 
         // define form
         $builder->addDefinition($this->prefix('form'))
