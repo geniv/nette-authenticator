@@ -52,7 +52,7 @@ class ArrayDriver implements IAuthenticator
                 $arr = $this->userlist[$resultId];
                 unset($arr['hash']);
 
-                return new Identity($resultId, $arr['role'], $arr);
+                return new Identity($resultId, (isset($arr['role']) ? $arr['role'] : null), $arr);
             }
         } else {
             throw new AuthenticationException('The credentials is incorrect.', self::IDENTITY_NOT_FOUND);

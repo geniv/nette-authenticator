@@ -24,7 +24,8 @@ Include in application
 
 ### available source drivers:
 - Dibi
-- Array
+- Array (base ident: key, login, hash)
+- Neon (same format like Array)
 
 neon configure:
 ```neon

@@ -17,6 +17,8 @@ use Nette\Security\Passwords;
  */
 class CombineDriver implements IAuthenticator
 {
+    /** @var array */
+    private $parameters;
 
 
     /**
@@ -26,7 +28,7 @@ class CombineDriver implements IAuthenticator
      */
     public function __construct(array $parameters)
     {
-        $this->userlist = $parameters['userlist'];
+        $this->parameters = $parameters;
     }
 
 
@@ -40,6 +42,8 @@ class CombineDriver implements IAuthenticator
     function authenticate(array $credentials)
     {
         list($login, $password) = $credentials;
+
+        // switch driver by order
 
 //        $resultId = array_filter($this->userlist, function ($row) use ($login, $password) {
 //            return ($row['login'] === $login && Passwords::verify($password, $row['hash']));
