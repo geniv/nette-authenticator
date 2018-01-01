@@ -23,9 +23,12 @@ Include in application
 ----------------------
 
 ### available source drivers:
-- Dibi
 - Array (base ident: key, id, hash)
 - Neon (same format like Array)
+- Dibi
+- Combine (combine driver Array, Neon, Dibi; order authenticate define combineOrder)
+
+hash is return from: `Passwords::hash($password)`
 
 neon configure:
 ```neon
@@ -34,9 +37,7 @@ authenticator:
 #   autowired: false    # default null, false => disable autowiring (in case multiple linked extension) | self
     source: "Dibi"
     tablePrefix: %tablePrefix%
-#    source: "Neon"
-#    path: %appDir%/authenticator.neon
-#    source: "Array"
+#   source: "Array"
     userlist: 
         Foo:
             id: 1
@@ -48,14 +49,16 @@ authenticator:
             hash: "@@hash!@@"
             role: moderator
             username: mr Bar
-#   classArray: Authenticator\Drivers\ArrayDriver
-#   classNeon: Authenticator\Drivers\NeonDriver
-#   classDibi: Authenticator\Drivers\DibiDriver
+#   source: "Neon"
+#   path: %appDir%/authenticator.neon
 #   source: "Combine"
 #   combineOrder:
 #       - Array
 #       - Neon
 #       - Dibi
+#   classArray: Authenticator\Drivers\ArrayDriver
+#   classNeon: Authenticator\Drivers\NeonDriver
+#   classDibi: Authenticator\Drivers\DibiDriver
 ```
 
 neon configure extension:

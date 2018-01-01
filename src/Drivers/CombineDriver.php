@@ -4,9 +4,7 @@ namespace Authenticator\Drivers;
 
 use Nette\Security\AuthenticationException;
 use Nette\Security\IAuthenticator;
-use Nette\Security\Identity;
 use Nette\Security\IIdentity;
-use Nette\Security\Passwords;
 
 
 /**
@@ -19,16 +17,27 @@ class CombineDriver implements IAuthenticator
 {
     /** @var array */
     private $parameters;
+    /** @var array */
+    private $drivers = [];
 
 
     /**
-     * ArrayDriver constructor.
+     * CombineDriver constructor.
      *
-     * @param array $parameters
+     * @param array       $parameters
+     * @param ArrayDriver $arrayDriver
+     * @param NeonDriver  $neonDriver
+     * @param DibiDriver  $dibiDriver
      */
-    public function __construct(array $parameters)
+    public function __construct(array $parameters, ArrayDriver $arrayDriver, NeonDriver $neonDriver, DibiDriver $dibiDriver)
     {
         $this->parameters = $parameters;
+
+        $this->drivers = [
+            'Array' => $arrayDriver,
+            'Neon'  => $neonDriver,
+            'Dibi'  => $dibiDriver,
+        ];
     }
 
 
@@ -42,27 +51,22 @@ class CombineDriver implements IAuthenticator
      */
     public function authenticate(array $credentials)
     {
-        list($login, $password) = $credentials;
-
+        $identity = null;
+        $lastException = null;
         foreach ($this->parameters['combineOrder'] as $driver) {
-            dump($driver);
+            try {
+                $identity = $this->drivers[$driver]->authenticate($credentials);
+                if ($identity) {
+                    $identity->driver = $driver;    // set identity data to key driver
+                    return $identity;
+                }
+            } catch (AuthenticationException $e) {
+                $lastException = $e;
+            }
         }
 
-        // switch driver by order
-
-//        $resultId = array_filter($this->userlist, function ($row) use ($login, $password) {
-//            return ($row['login'] === $login && Passwords::verify($password, $row['hash']));
-//        });
-//
-//        if ($resultId) {
-//            if (isset($this->userlist[$resultId])) {
-//                $arr = $this->userlist[$resultId];
-//                unset($arr['hash']);
-//
-//                return new Identity($resultId, $arr['role'], $arr);
-//            }
-//        } else {
-//            throw new AuthenticationException('The credentials is incorrect.', self::IDENTITY_NOT_FOUND);
-//        }
+        if (!$identity && $lastException) {
+            throw $lastException;
+        }
     }
 }
