@@ -51,10 +51,11 @@ authenticator:
 #   classArray: Authenticator\Drivers\ArrayDriver
 #   classNeon: Authenticator\Drivers\NeonDriver
 #   classDibi: Authenticator\Drivers\DibiDriver
-    combineOrder:
-        - Array
-        - Neon
-        - Dibi
+#   source: "Combine"
+#   combineOrder:
+#       - Array
+#       - Neon
+#       - Dibi
 ```
 
 neon configure extension:
