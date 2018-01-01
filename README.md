@@ -46,6 +46,7 @@ authenticator:
             role: moderator
             username: mr Bar
 #   classArray: Authenticator\Drivers\ArrayDriver
+#   classNeon: Authenticator\Drivers\NeonDriver
 #   classDibi: Authenticator\Drivers\DibiDriver
 ```
 
