@@ -41,26 +41,27 @@ class Extension extends CompilerExtension
         $config = $this->validateConfig($this->defaults);
 
         // define driver
-        switch ($config['source']) {
-            case 'Array':
-                $builder->addDefinition($this->prefix('default'))
-                    ->setFactory($config['classArray'], [$config]);
-                break;
+        if ($config['source'] == 'Array' || in_array('Array', $config['combineOrder'])) {
+            $builder->addDefinition($this->prefix('Array'))
+                ->setFactory($config['classArray'], [$config])
+                ->setAutowired('self');
+        }
 
-            case 'Neon':
-                $builder->addDefinition($this->prefix('default'))
-                    ->setFactory($config['classNeon'], [$config]);
-                break;
+        if ($config['source'] == 'Neon' || in_array('Neon', $config['combineOrder'])) {
+            $builder->addDefinition($this->prefix('Neon'))
+                ->setFactory($config['classNeon'], [$config])
+                ->setAutowired('self');
+        }
 
-            case 'Dibi':
-                $builder->addDefinition($this->prefix('default'))
-                    ->setFactory($config['classDibi'], [$config]);
-                break;
+        if ($config['source'] == 'Dibi' || in_array('Dibi', $config['combineOrder'])) {
+            $builder->addDefinition($this->prefix('Dibi'))
+                ->setFactory($config['classDibi'], [$config])
+                ->setAutowired('self');
+        }
 
-            case 'Combine':
-                $builder->addDefinition($this->prefix('default'))
-                    ->setFactory(CombineDriver::class, [$config]);
-                break;
+        if ($config['source'] == 'Combine') {
+            $builder->addDefinition($this->prefix('default'))
+                ->setFactory(CombineDriver::class, [$config]);
         }
 
         // define form

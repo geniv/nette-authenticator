@@ -23,29 +23,39 @@ Include in application
 ----------------------
 
 ### available source drivers:
-- Dibi
-- Array (base ident: key, login, hash)
+- Array (base ident: key, id, hash)
 - Neon (same format like Array)
+- Dibi
+- Combine (combine driver Array, Neon, Dibi; order authenticate define combineOrder)
+
+hash is return from: `Passwords::hash($password)`
 
 neon configure:
 ```neon
-# prihlasovani
+# login
 authenticator:
 #   autowired: false    # default null, false => disable autowiring (in case multiple linked extension) | self
     source: "Dibi"
     tablePrefix: %tablePrefix%
-#    source: "Array"
+#   source: "Array"
     userlist: 
-        1:
-            login: Foo
-            hash: @@hash!@@
+        Foo:
+            id: 1
+            hash: "@@hash!@@"
             role: guest
             username: mr Foo
-        2:
-            login: Bar
-            hash: @@hash!@@
+        Bar:
+            id: 2
+            hash: "@@hash!@@"
             role: moderator
             username: mr Bar
+#   source: "Neon"
+#   path: %appDir%/authenticator.neon
+#   source: "Combine"
+#   combineOrder:
+#       - Array
+#       - Neon
+#       - Dibi
 #   classArray: Authenticator\Drivers\ArrayDriver
 #   classNeon: Authenticator\Drivers\NeonDriver
 #   classDibi: Authenticator\Drivers\DibiDriver
