@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 namespace Authenticator;
 
@@ -44,9 +44,9 @@ class LoginForm extends Control
      * Set template path.
      *
      * @param $path
-     * @return LoginForm
+     * @return $this
      */
-    public function setTemplatePath($path): self
+    public function setTemplatePath($path)
     {
         $this->templatePath = $path;
         return $this;
@@ -59,6 +59,7 @@ class LoginForm extends Control
     public function render()
     {
         $template = $this->getTemplate();
+
         $template->setTranslator($this->translator);
         $template->setFile($this->templatePath);
         $template->render();
@@ -71,7 +72,7 @@ class LoginForm extends Control
      * @param $name
      * @return Form
      */
-    protected function createComponentForm($name): Form
+    protected function createComponentForm($name)
     {
         $form = new Form($this, $name);
         $form->setTranslator($this->translator);

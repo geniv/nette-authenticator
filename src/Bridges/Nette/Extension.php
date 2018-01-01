@@ -1,8 +1,10 @@
-<?php declare(strict_types=1);
+<?php
 
 namespace Authenticator\Bridges\Nette;
 
-use Authenticator\DibiAuthenticator;
+use Authenticator\Drivers\ArrayDriver;
+use Authenticator\Drivers\DibiDriver;
+use Authenticator\Drivers\NeonDriver;
 use Authenticator\LoginForm;
 use Nette\DI\CompilerExtension;
 
@@ -17,9 +19,14 @@ class Extension extends CompilerExtension
 {
     /** @var array default values */
     private $defaults = [
-        'tablePrefix'   => null,
-        'autowired'     => null,
-        'authenticator' => DibiAuthenticator::class,
+        'autowired'   => null,
+        'source'      => null,  // Array|Neon|Dibi
+        'tablePrefix' => null,  // db prefix for dibi driver
+        'userlist'    => [],    // array for array driver
+        'path'        => null,  // path to file for neon driver
+        'classArray'  => ArrayDriver::class,
+        'classNeon'   => NeonDriver::class,
+        'classDibi'   => DibiDriver::class,
     ];
 
 
@@ -31,9 +38,23 @@ class Extension extends CompilerExtension
         $builder = $this->getContainerBuilder();
         $config = $this->validateConfig($this->defaults);
 
-        // define authenticator
-        $builder->addDefinition($this->prefix('default'))
-            ->setFactory($config['authenticator'], [$config]);
+        // define driver
+        switch ($config['source']) {
+            case 'Array':
+                $builder->addDefinition($this->prefix('default'))
+                    ->setFactory($config['classArray'], [$config]);
+                break;
+
+            case 'Neon':
+                $builder->addDefinition($this->prefix('default'))
+                    ->setFactory($config['classNeon'], [$config]);
+                break;
+
+            case 'Dibi':
+                $builder->addDefinition($this->prefix('default'))
+                    ->setFactory($config['classDibi'], [$config]);
+                break;
+        }
 
         // define form
         $builder->addDefinition($this->prefix('form'))

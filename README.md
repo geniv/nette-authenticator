@@ -21,13 +21,32 @@ require:
 
 Include in application
 ----------------------
+
+### available source drivers:
+- Dibi
+- Array
+
 neon configure:
 ```neon
 # prihlasovani
 authenticator:
-    tablePrefix: %tablePrefix%
 #   autowired: false    # default null, false => disable autowiring (in case multiple linked extension) | self
-#   authenticator: DibiAuthenticator
+    source: "Dibi"
+    tablePrefix: %tablePrefix%
+#    source: "Array"
+    userlist: 
+        1:
+            login: Foo
+            hash: @@hash!@@
+            role: guest
+            username: mr Foo
+        2:
+            login: Bar
+            hash: @@hash!@@
+            role: moderator
+            username: mr Bar
+#   classArray: Authenticator\Drivers\ArrayDriver
+#   classDibi: Authenticator\Drivers\DibiDriver
 ```
 
 neon configure extension:
