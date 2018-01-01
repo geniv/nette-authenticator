@@ -43,6 +43,10 @@ class CombineDriver implements IAuthenticator
     {
         list($login, $password) = $credentials;
 
+        foreach ($this->parameters['combineOrder'] as $driver) {
+            dump($driver);
+        }
+
         // switch driver by order
 
 //        $resultId = array_filter($this->userlist, function ($row) use ($login, $password) {
