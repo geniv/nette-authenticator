@@ -41,25 +41,35 @@ class Extension extends CompilerExtension
         $config = $this->validateConfig($this->defaults);
 
         // define driver
-        if ($config['source'] == 'Array' || in_array('Array', $config['combineOrder'])) {
-            $builder->addDefinition($this->prefix('Array'))
-                ->setFactory($config['classArray'], [$config])
-                ->setAutowired('self');
+        $array = null;
+        if (in_array('Array', $config['combineOrder'] + [$config['source']])) {
+            $array = $builder->addDefinition($this->prefix('Array'))
+                ->setFactory($config['classArray'], [$config]);
         }
 
-        if ($config['source'] == 'Neon' || in_array('Neon', $config['combineOrder'])) {
-            $builder->addDefinition($this->prefix('Neon'))
-                ->setFactory($config['classNeon'], [$config])
-                ->setAutowired('self');
+        $neon = null;
+        if (in_array('Neon', $config['combineOrder'] + [$config['source']])) {
+            $neon = $builder->addDefinition($this->prefix('Neon'))
+                ->setFactory($config['classNeon'], [$config]);
         }
 
-        if ($config['source'] == 'Dibi' || in_array('Dibi', $config['combineOrder'])) {
-            $builder->addDefinition($this->prefix('Dibi'))
-                ->setFactory($config['classDibi'], [$config])
-                ->setAutowired('self');
+        $dibi = null;
+        if (in_array('Dibi', $config['combineOrder'] + [$config['source']])) {
+            $dibi = $builder->addDefinition($this->prefix('Dibi'))
+                ->setFactory($config['classDibi'], [$config]);
         }
 
         if ($config['source'] == 'Combine') {
+            if ($array) {
+                $array->setAutowired('self');
+            }
+            if ($neon) {
+                $neon->setAutowired('self');
+            }
+            if ($dibi) {
+                $dibi->setAutowired('self');
+            }
+
             $builder->addDefinition($this->prefix('default'))
                 ->setFactory(CombineDriver::class, [$config]);
         }
