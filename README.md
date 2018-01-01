@@ -29,11 +29,13 @@ Include in application
 
 neon configure:
 ```neon
-# prihlasovani
+# login
 authenticator:
 #   autowired: false    # default null, false => disable autowiring (in case multiple linked extension) | self
     source: "Dibi"
     tablePrefix: %tablePrefix%
+#    source: "Neon"
+#    path: %appDir%/authenticator.neon
 #    source: "Array"
     userlist: 
         1:
@@ -49,6 +51,10 @@ authenticator:
 #   classArray: Authenticator\Drivers\ArrayDriver
 #   classNeon: Authenticator\Drivers\NeonDriver
 #   classDibi: Authenticator\Drivers\DibiDriver
+    combineOrder:
+        - Array
+        - Neon
+        - Dibi
 ```
 
 neon configure extension:

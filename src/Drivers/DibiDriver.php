@@ -29,10 +29,12 @@ class DibiDriver implements IAuthenticator
     private $connection;
     /** @var string table names */
     private $tableIdentity;
+    /** @var array */
+    private $columns = ['id', 'login', 'hash', 'username', 'email', 'id_role', 'active', 'added'];
 
 
     /**
-     * DibiAuthenticator constructor.
+     * DibiDriver constructor.
      *
      * @param array      $parameters
      * @param Connection $connection
@@ -46,33 +48,58 @@ class DibiDriver implements IAuthenticator
 
 
     /**
+     * Get columns.
+     *
+     * @return array
+     */
+    public function getColumns()
+    {
+        return $this->columns;
+
+    }
+
+
+    /**
+     * Set columns.
+     *
+     * @param $columns
+     * @return $this
+     */
+    public function setColumns(array $columns)
+    {
+        $this->columns = $columns;
+        return $this;
+    }
+
+
+    /**
      * Get list.
      *
      * @return Fluent
      */
     public function getList()
     {
-        return $this->connection->select('id, login, hash, username, email, role, active, added')
-            ->from($this->tableIdentity);
+        return $this->connection->select($this->columns)->from($this->tableIdentity);
     }
 
 
     /**
      * Insert user.
      *
-     * @param        $username
-     * @param        $password
-     * @param string $role
-     * @param bool   $active
-     * @return mixed
+     * @param      $login
+     * @param      $password
+     * @param null $role
+     * @param bool $active
+     * @return \Dibi\Result|int
      * @throws \Dibi\Exception
      */
-    public function insertUser($username, $password, $role = 'guest', $active = true)
+    public function insertUser($login, $password, $role = null, $active = true)
     {
+        // insert to base colums
         $args = [
-            'login'     => $username,
+            'login'     => $login,
             'hash'      => $this->getHash($password),
-            'role'      => $role,
+            'id_role'   => $role,
             'active'    => $active,
             'added%sql' => 'NOW()',
         ];
@@ -128,7 +155,7 @@ class DibiDriver implements IAuthenticator
                     $arr = $result->toArray();
                     unset($arr['hash']);
 
-                    return new Identity($result['id'], $result['role'], $arr);
+                    return new Identity($result['id'], $result['id_role'], $arr);
                 } else {
                     throw new AuthenticationException('Not active account.', self::NOT_APPROVED);
                 }

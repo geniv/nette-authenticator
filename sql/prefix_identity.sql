@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.4.1deb2ubuntu2
--- http://www.phpmyadmin.net
+-- version 4.6.6deb4
+-- https://www.phpmyadmin.net/
 --
--- Počítač: localhost
--- Vytvořeno: Sob 24. čen 2017, 23:10
--- Verze serveru: 10.0.29-MariaDB-0ubuntu0.16.04.1
--- Verze PHP: 7.0.18-0ubuntu0.16.04.1
+-- Počítač: localhost:3306
+-- Vytvořeno: Pon 01. led 2018, 19:19
+-- Verze serveru: 10.1.26-MariaDB-0+deb9u1
+-- Verze PHP: 7.0.19-1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -27,10 +27,10 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `prefix_identity` (
-  `id` int(11) NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `login` varchar(50) DEFAULT NULL COMMENT 'login',
   `hash` varchar(100) DEFAULT NULL COMMENT 'otisk hesla',
-  `role` varchar(20) DEFAULT NULL COMMENT 'role',
+  `id_role` bigint(20) UNSIGNED DEFAULT NULL,
   `username` varchar(100) DEFAULT NULL COMMENT 'jmeno uzivatele',
   `email` varchar(100) DEFAULT NULL COMMENT 'email',
   `active` tinyint(1) DEFAULT '0' COMMENT 'aktivni',
@@ -41,7 +41,6 @@ CREATE TABLE `prefix_identity` (
 -- Vypisuji data pro tabulku `prefix_identity`
 --
 
--- data
 
 --
 -- Klíče pro exportované tabulky
@@ -52,7 +51,8 @@ CREATE TABLE `prefix_identity` (
 --
 ALTER TABLE `prefix_identity`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `login_UNIQUE` (`login`);
+  ADD UNIQUE KEY `login_UNIQUE` (`login`),
+  ADD KEY `fk_identity_acl_role_idx` (`id_role`);
 
 --
 -- AUTO_INCREMENT pro tabulky
@@ -62,7 +62,17 @@ ALTER TABLE `prefix_identity`
 -- AUTO_INCREMENT pro tabulku `prefix_identity`
 --
 ALTER TABLE `prefix_identity`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- Omezení pro exportované tabulky
+--
+
+--
+-- Omezení pro tabulku `prefix_identity`
+--
+ALTER TABLE `prefix_identity`
+  ADD CONSTRAINT `fk_identity_acl_role` FOREIGN KEY (`id_role`) REFERENCES `prefix_acl_role` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
