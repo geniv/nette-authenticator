@@ -24,7 +24,7 @@ Include in application
 
 ### available source drivers:
 - Dibi
-- Array (base ident: key, login, hash)
+- Array (base ident: key, id, hash)
 - Neon (same format like Array)
 
 neon configure:
@@ -38,13 +38,13 @@ authenticator:
 #    path: %appDir%/authenticator.neon
 #    source: "Array"
     userlist: 
-        1:
-            login: Foo
+        Foo:
+            id: 1
             hash: @@hash!@@
             role: guest
             username: mr Foo
-        2:
-            login: Bar
+        Bar:
+            id: 2
             hash: @@hash!@@
             role: moderator
             username: mr Bar
