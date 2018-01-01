@@ -24,12 +24,12 @@ class CombineDriver implements IAuthenticator
     /**
      * CombineDriver constructor.
      *
-     * @param array       $parameters
-     * @param ArrayDriver $arrayDriver
-     * @param NeonDriver  $neonDriver
-     * @param DibiDriver  $dibiDriver
+     * @param array            $parameters
+     * @param ArrayDriver|null $arrayDriver
+     * @param NeonDriver|null  $neonDriver
+     * @param DibiDriver|null  $dibiDriver
      */
-    public function __construct(array $parameters, ArrayDriver $arrayDriver, NeonDriver $neonDriver, DibiDriver $dibiDriver)
+    public function __construct(array $parameters, ArrayDriver $arrayDriver = null, NeonDriver $neonDriver = null, DibiDriver $dibiDriver = null)
     {
         $this->parameters = $parameters;
 
@@ -54,14 +54,16 @@ class CombineDriver implements IAuthenticator
         $identity = null;
         $lastException = null;
         foreach ($this->parameters['combineOrder'] as $driver) {
-            try {
-                $identity = $this->drivers[$driver]->authenticate($credentials);
-                if ($identity) {
-                    $identity->driver = $driver;    // set identity data to key driver
-                    return $identity;
+            if ($driver) {
+                try {
+                    $identity = $this->drivers[$driver]->authenticate($credentials);
+                    if ($identity) {
+                        $identity->driver = $driver;    // set identity data to key driver
+                        return $identity;
+                    }
+                } catch (AuthenticationException $e) {
+                    $lastException = $e;
                 }
-            } catch (AuthenticationException $e) {
-                $lastException = $e;
             }
         }
 
