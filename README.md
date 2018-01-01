@@ -40,12 +40,12 @@ authenticator:
     userlist: 
         Foo:
             id: 1
-            hash: @@hash!@@
+            hash: "@@hash!@@"
             role: guest
             username: mr Foo
         Bar:
             id: 2
-            hash: @@hash!@@
+            hash: "@@hash!@@"
             role: moderator
             username: mr Bar
 #   classArray: Authenticator\Drivers\ArrayDriver
