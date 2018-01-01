@@ -1,6 +1,6 @@
-<?php declare(strict_types=1);
+<?php
 
-namespace Authenticator;
+namespace Authenticator\Drivers;
 
 use Dibi\Connection;
 use Dibi\Fluent;
@@ -12,12 +12,12 @@ use Nette\SmartObject;
 
 
 /**
- * Class DibiAuthenticator
+ * Class DibiDriver
  *
  * @author  geniv
- * @package Authenticator
+ * @package Authenticator\Drivers
  */
-class DibiAuthenticator implements IAuthenticator
+class DibiDriver implements IAuthenticator
 {
     use SmartObject;
 
@@ -50,7 +50,7 @@ class DibiAuthenticator implements IAuthenticator
      *
      * @return Fluent
      */
-    public function getList(): Fluent
+    public function getList()
     {
         return $this->connection->select('id, login, hash, username, email, role, active, added')
             ->from($this->tableIdentity);
@@ -101,7 +101,7 @@ class DibiAuthenticator implements IAuthenticator
      * @param string $password
      * @return string
      */
-    public function getHash(string $password): string
+    public function getHash($password)
     {
         return Passwords::hash($password);
     }
@@ -114,7 +114,7 @@ class DibiAuthenticator implements IAuthenticator
      * @return Identity
      * @throws AuthenticationException
      */
-    public function authenticate(array $credentials): Identity
+    public function authenticate(array $credentials)
     {
         list($login, $password) = $credentials;
 
