@@ -6,6 +6,7 @@ use Dibi\Connection;
 use Dibi\Fluent;
 use Nette\Security\AuthenticationException;
 use Nette\Security\IAuthenticator;
+use Nette\Security\IIdentity;
 use Nette\Security\Passwords;
 use Nette\Security\Identity;
 use Nette\SmartObject;
@@ -135,10 +136,11 @@ class DibiDriver implements IAuthenticator
 
 
     /**
-     * Authenticate.
+     * Performs an authentication against e.g. database.
+     * and returns IIdentity on success or throws AuthenticationException
      *
      * @param array $credentials
-     * @return Identity
+     * @return IIdentity
      * @throws AuthenticationException
      */
     public function authenticate(array $credentials)

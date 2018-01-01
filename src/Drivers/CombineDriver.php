@@ -37,7 +37,8 @@ class CombineDriver implements IAuthenticator
      * and returns IIdentity on success or throws AuthenticationException
      *
      * @param array $credentials
-     * @return void
+     * @return IIdentity
+     * @throws AuthenticationException
      */
     public function authenticate(array $credentials)
     {
