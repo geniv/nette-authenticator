@@ -31,7 +31,7 @@ class DibiDriver implements IAuthenticator
     /** @var string table names */
     private $tableIdentity;
     /** @var array */
-    private $columns = ['id', 'login', 'hash', 'username', 'email', 'id_role', 'active', 'added'];
+    private $columns = ['id', 'login', 'hash', 'username', 'email', 'role', 'active', 'added'];
 
 
     /**
@@ -100,7 +100,7 @@ class DibiDriver implements IAuthenticator
         $args = [
             'login'     => $login,
             'hash'      => $this->getHash($password),
-            'id_role'   => $role,
+            'role'      => $role,
             'active'    => $active,
             'added%sql' => 'NOW()',
         ];
@@ -157,7 +157,7 @@ class DibiDriver implements IAuthenticator
                     $arr = $result->toArray();
                     unset($arr['hash']);
 
-                    return new Identity($result['id'], $result['id_role'], $arr);
+                    return new Identity($result['id'], $result['role'], $arr);
                 } else {
                     throw new AuthenticationException('Not active account.', self::NOT_APPROVED);
                 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Počítač: localhost:3306
--- Vytvořeno: Pon 01. led 2018, 19:19
+-- Vytvořeno: Stř 03. led 2018, 19:31
 -- Verze serveru: 10.1.26-MariaDB-0+deb9u1
 -- Verze PHP: 7.0.19-1
 
@@ -30,7 +30,7 @@ CREATE TABLE `prefix_identity` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `login` varchar(50) DEFAULT NULL COMMENT 'login',
   `hash` varchar(100) DEFAULT NULL COMMENT 'otisk hesla',
-  `id_role` bigint(20) UNSIGNED DEFAULT NULL,
+  `role` varchar(50) DEFAULT NULL COMMENT 'role',
   `username` varchar(100) DEFAULT NULL COMMENT 'jmeno uzivatele',
   `email` varchar(100) DEFAULT NULL COMMENT 'email',
   `active` tinyint(1) DEFAULT '0' COMMENT 'aktivni',
@@ -52,7 +52,7 @@ CREATE TABLE `prefix_identity` (
 ALTER TABLE `prefix_identity`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `login_UNIQUE` (`login`),
-  ADD KEY `fk_identity_acl_role_idx` (`id_role`);
+  ADD KEY `fk_identity_acl_role_idx` (`role`);
 
 --
 -- AUTO_INCREMENT pro tabulky
@@ -71,7 +71,7 @@ ALTER TABLE `prefix_identity`
 -- Omezení pro tabulku `prefix_identity`
 --
 ALTER TABLE `prefix_identity`
-  ADD CONSTRAINT `fk_identity_acl_role` FOREIGN KEY (`id_role`) REFERENCES `prefix_acl_role` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_identity_acl_role` FOREIGN KEY (`role`) REFERENCES `prefix_acl_role` (`role`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
