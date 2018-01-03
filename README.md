@@ -25,7 +25,7 @@ Include in application
 ### available source drivers:
 - Array (base ident: key, id, hash)
 - Neon (same format like Array)
-- Dibi
+- Dibi (base ident: id, login, hash, active, role, added)
 - Combine (combine driver Array, Neon, Dibi; order authenticate define combineOrder)
 
 hash is return from: `Passwords::hash($password)`
@@ -86,6 +86,8 @@ protected function createComponentLoginForm(LoginForm $loginForm)
         $this->flashMessage('Logout!', 'info');
         $this->redirect('this');
     };
+
+    //OR
 
     // callback from $this->user (dont use redirect)
     $this->user->onLoggedIn[] = function (User $user) {
