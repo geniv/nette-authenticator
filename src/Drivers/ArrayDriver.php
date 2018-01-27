@@ -45,11 +45,11 @@ class ArrayDriver implements IAuthenticator
         list($login, $password) = $credentials;
 
         if (isset($this->userlist[$login])) {
-            $user = $this->userlist[$login];
-            if ($user && Passwords::verify($password, $user['hash'])) {
-                unset($user['hash']);
+            $result = $this->userlist[$login];
+            if (Passwords::verify($password, $result['hash'])) {
+                unset($result['hash']);
 
-                return new Identity($user['id'], (isset($user['role']) ? $user['role'] : null), $user);
+                return new Identity($result['id'], (isset($result['role']) ? $result['role'] : null), $result);
             } else {
                 throw new AuthenticationException('The password is incorrect.', self::INVALID_CREDENTIAL);
             }

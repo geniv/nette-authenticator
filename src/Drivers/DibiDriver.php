@@ -80,7 +80,8 @@ class DibiDriver implements IAuthenticator
      */
     public function getList()
     {
-        return $this->connection->select($this->columns)->from($this->tableIdentity);
+        return $this->connection->select($this->columns)
+            ->from($this->tableIdentity);
     }
 
 
@@ -96,7 +97,7 @@ class DibiDriver implements IAuthenticator
      */
     public function insertUser($login, $password, $role = null, $active = true)
     {
-        // insert to base colums
+        // insert to base columns
         $args = [
             'login'     => $login,
             'hash'      => $this->getHash($password),
