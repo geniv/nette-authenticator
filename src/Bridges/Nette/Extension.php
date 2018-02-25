@@ -28,7 +28,7 @@ class Extension extends CompilerExtension
         'classArray'   => ArrayDriver::class,
         'classNeon'    => NeonDriver::class,
         'classDibi'    => DibiDriver::class,
-        'combineOrder' => [],    // array order combine login trought drivers
+        'combineOrder' => [],    // array order combine login thought drivers
     ];
 
 

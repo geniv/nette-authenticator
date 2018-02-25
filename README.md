@@ -74,12 +74,12 @@ use Authenticator\LoginForm;
 protected function createComponentLoginForm(LoginForm $loginForm)
 {
     //$loginForm->setTemplatePath(__DIR__ . '/templates/LoginForm.latte');
-    // callback from $loginForm (redirect is no problem)
+    // callback from $loginForm (support redirect)
     $loginForm->onLoggedIn[] = function (User $user) {
         $this->flashMessage('Login!', 'info');
         $this->redirect('this');
     };
-    $loginForm->onLoggedInException[] = function (Exception $e) {
+    $loginForm->onLoggedInException[] = function (AuthenticationException $e) {
         $this->flashMessage('Login exception! ' . $e->getMessage(), 'danger');
     };
     $loginForm->onLoggedOut[] = function (User $user) {
@@ -89,7 +89,7 @@ protected function createComponentLoginForm(LoginForm $loginForm)
 
     //OR
 
-    // callback from $this->user (dont use redirect)
+    // callback from $this->user (don't support redirect)
     $this->user->onLoggedIn[] = function (User $user) {
         $this->flashMessage('Login!', 'info');
     };

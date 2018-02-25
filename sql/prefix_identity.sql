@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Počítač: localhost:3306
--- Vytvořeno: Stř 03. led 2018, 19:31
+-- Vytvořeno: Sob 27. led 2018, 20:40
 -- Verze serveru: 10.1.26-MariaDB-0+deb9u1
--- Verze PHP: 7.0.19-1
+-- Verze PHP: 7.0.27-0+deb9u1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -36,11 +36,6 @@ CREATE TABLE `prefix_identity` (
   `active` tinyint(1) DEFAULT '0' COMMENT 'aktivni',
   `added` datetime DEFAULT NULL COMMENT 'pridano'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='tabulka uzivatelu pro prihlaseni do administrace webu';
-
---
--- Vypisuji data pro tabulku `prefix_identity`
---
-
 
 --
 -- Klíče pro exportované tabulky
